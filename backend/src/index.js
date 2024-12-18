@@ -9,52 +9,54 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://courageous-horse-5119ed.netlify.app'
-];
-
-// Middleware
+// CORS configuration with error handling
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'http://localhost:5173',
+    'https://courageous-horse-5119ed.netlify.app'
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
 
-// Pre-flight requests
-app.options('*', cors());
-
-// Routes
-app.use('/api', emailRouter);
-app.use('/', healthRouter);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
+// Basic error handler
+const errorHandler = (err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(500).json({ 
     error: 'Internal Server Error',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
+};
+
+// Routes with error handling
+app.use('/api', (req, res, next) => {
+  try {
+    emailRouter(req, res, next);
+  } catch (error) {
+    next(error);
+  }
 });
 
-// For local development
+app.use('/', (req, res, next) => {
+  try {
+    healthRouter(req, res, next);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.use(errorHandler);
+
+// Development server
 if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3001;
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 }
 
-// Export for serverless
+// Serverless export
 export default app;
