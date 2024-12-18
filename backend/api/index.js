@@ -1,4 +1,8 @@
-import app from '../src/index.js';
+import dotenv from 'dotenv';
+import app from '../src/app.js';
+
+// Load environment variables
+dotenv.config();
 
 // Vercel serverless handler
 export default async function handler(req, res) {
