@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-// Validate required environment variables first
+// Validate required environment variables
 const requiredEnvVars = ['RESEND_API_KEY'];
 
 for (const envVar of requiredEnvVars) {
@@ -12,12 +12,9 @@ for (const envVar of requiredEnvVars) {
   }
 }
 
-export const environment = {
+export const config = {
   port: process.env.PORT || 3001,
   resendApiKey: process.env.RESEND_API_KEY,
-  nodeEnv: process.env.NODE_ENV || 'development',
-  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  apiUrl: process.env.NODE_ENV === 'production' 
-    ? 'https://secret-santa-backend.vercel.app'
-    : 'http://localhost:3001'
+  environment: process.env.NODE_ENV || 'development',
+  corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173'
 };

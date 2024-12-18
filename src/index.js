@@ -1,27 +1,20 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import { config } from './config/environment.js';
+import { corsMiddleware } from './middleware/cors.js';
 import { emailRouter } from './routes/emailRoutes.js';
 import { healthRouter } from './routes/healthRoutes.js';
 
-// Load environment variables
-dotenv.config();
-
 const app = express();
-const port = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
-  methods: ['POST']
-}));
+app.use(corsMiddleware);
 app.use(express.json());
 
 // Routes
 app.use('/api', emailRouter);
 app.use('/', healthRouter);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(config.port, () => {
+  console.log(`Server running on port ${config.port}`);
+  console.log(`Environment: ${config.environment}`);
 });

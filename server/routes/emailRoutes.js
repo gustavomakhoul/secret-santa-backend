@@ -1,12 +1,10 @@
 import express from 'express';
-import { sendSecretSantaEmail } from '../controllers/emailController.js';
 import { emailRateLimiter } from '../middleware/rateLimiter.js';
 import { validateEmailRequest } from '../middleware/validation.js';
+import { sendSecretSantaEmail } from '../controllers/emailController.js';
 
 const router = express.Router();
 
-router.use(emailRateLimiter);
-router.use(validateEmailRequest);
-router.post('/send-secret-santa', sendSecretSantaEmail);
+router.post('/send-secret-santa', emailRateLimiter, validateEmailRequest, sendSecretSantaEmail);
 
-export default router;
+export { router as emailRouter };

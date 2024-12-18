@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '../config/constants';
+import { ERROR_MESSAGES } from '../config';
 import { sendSecretSantaRequest } from '../utils/api';
 import type { SecretSantaPair } from '../types';
 

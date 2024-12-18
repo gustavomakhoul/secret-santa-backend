@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from '../config/constants';
+import { API_ENDPOINTS, ERROR_MESSAGES } from '../config';
 import type { SecretSantaPair } from '../types';
 
 export async function makeApiRequest<T>(
@@ -7,7 +7,7 @@ export async function makeApiRequest<T>(
 ): Promise<T> {
   const apiUrl = import.meta.env.VITE_API_URL;
   if (!apiUrl) {
-    throw new Error('API URL não configurada');
+    throw new Error(ERROR_MESSAGES.MISSING_API_URL);
   }
 
   const response = await fetch(`${apiUrl}${endpoint}`, options);
