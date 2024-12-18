@@ -17,13 +17,22 @@ const allowedOrigins = [
 
 // Middleware
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   credentials: true
 }));
 
 app.use(express.json());
+
+// Pre-flight requests
+app.options('*', cors());
 
 // Routes
 app.use('/api', emailRouter);

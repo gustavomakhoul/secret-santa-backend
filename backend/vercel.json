@@ -14,7 +14,8 @@
       "headers": {
         "Access-Control-Allow-Origin": "https://courageous-horse-5119ed.netlify.app",
         "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type"
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Credentials": "true"
       }
     }
   ],
