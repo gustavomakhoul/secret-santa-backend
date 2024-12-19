@@ -1,8 +1,7 @@
 import { Resend } from 'resend';
 import type { SecretSantaPair } from '../types';
-import { EMAIL_CONFIG } from '../config/email';
 
-const resend = new Resend(EMAIL_CONFIG.RESEND_API_KEY);
+const resend = new Resend('re_7XCu3Tc8_zvz6hDr2rNqVAtRgFDAX1qJm');
 
 export const generateEmailHtml = (giverName: string, receiverName: string) => `
   <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -17,10 +16,18 @@ export const generateEmailHtml = (giverName: string, receiverName: string) => `
 `;
 
 export const sendEmail = async (pair: SecretSantaPair) => {
-  return resend.emails.send({
-    from: EMAIL_CONFIG.FROM_EMAIL,
-    to: pair.giver.email,
-    subject: EMAIL_CONFIG.SUBJECT,
-    html: generateEmailHtml(pair.giver.name, pair.receiver.name)
-  });
-}
+  // alert(JSON.stringify(pair))
+return fetch('https://corsbypass-5jyi.onrender.com/https://api.resend.com/emails', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer re_8apQEX89_HMwAFgnMUzxfdBbE2hFwvaj5',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+from: 'amigo-secreto@nohca.com',
+      to: pair.giver.email,
+      subject: '🎄 Seu Amigo Secreto foi sorteado!',
+      html: generateEmailHtml(pair.giver.name, pair.receiver.name)
+  })
+})
+  }
