@@ -31,7 +31,7 @@ function generateSecretSantaEmail(giver, receiver) {
   `;
 }
 
-export async function handler(event) {
+export const handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -86,4 +86,4 @@ export async function handler(event) {
       })
     };
   }
-}
+};
