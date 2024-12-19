@@ -1,32 +1,37 @@
 import React from 'react';
-import { Trash2 } from 'lucide-react';
-import type { Participant } from '../types';
+import { Trash2, Phone } from 'lucide-react';
+import { Participant } from '../types';
 
 interface ParticipantListProps {
   participants: Participant[];
-  onRemoveParticipant: (id: string) => void;
+  onRemove: (id: string) => void;
 }
 
-export function ParticipantList({ participants, onRemoveParticipant }: ParticipantListProps) {
+export function ParticipantList({ participants, onRemove }: ParticipantListProps) {
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-medium text-gray-900">Participantes ({participants.length})</h3>
-      <div className="mt-4 divide-y divide-gray-200">
-        {participants.map((participant) => (
-          <div key={participant.id} className="flex items-center justify-between py-3">
-            <div>
-              <p className="text-sm font-medium text-gray-900">{participant.name}</p>
-              <p className="text-sm text-gray-500">{participant.email}</p>
-            </div>
-            <button
-              onClick={() => onRemoveParticipant(participant.id)}
-              className="text-red-600 hover:text-red-800"
-            >
-              <Trash2 className="h-5 w-5" />
-            </button>
+    <div className="space-y-2">
+      {participants.map((participant) => (
+        <div
+          key={participant.id}
+          className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-gray-800">{participant.name}</span>
+            {participant.whatsapp && (
+              <span className="flex items-center text-sm text-gray-500">
+                <Phone size={14} className="mr-1" />
+                {participant.whatsapp}
+              </span>
+            )}
           </div>
-        ))}
-      </div>
+          <button
+            onClick={() => onRemove(participant.id)}
+            className="text-red-500 hover:text-red-700 transition-colors"
+          >
+            <Trash2 size={18} />
+          </button>
+        </div>
+      ))}
     </div>
   );
 }

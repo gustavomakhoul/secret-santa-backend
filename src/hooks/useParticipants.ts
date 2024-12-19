@@ -1,32 +1,26 @@
 import { useState } from 'react';
-import type { Participant } from '../types';
-import { validateParticipant } from '../utils/validation';
+import { Participant } from '../types';
 
 export function useParticipants() {
   const [participants, setParticipants] = useState<Participant[]>([]);
 
-  const addParticipant = (participant: Participant): string | null => {
-    const validationError = validateParticipant(participant);
-    if (validationError) {
-      return validationError;
-    }
-
-    const emailExists = participants.some(p => p.email === participant.email);
-    if (emailExists) {
-      return 'Este email já está cadastrado';
-    }
-
-    setParticipants(prev => [...prev, participant]);
-    return null;
+  const addParticipant = (newParticipant: Omit<Participant, 'id'>) => {
+    setParticipants([
+      ...participants,
+      {
+        id: crypto.randomUUID(),
+        ...newParticipant
+      }
+    ]);
   };
 
   const removeParticipant = (id: string) => {
-    setParticipants(prev => prev.filter(p => p.id !== id));
+    setParticipants(participants.filter(p => p.id !== id));
   };
 
   return {
     participants,
     addParticipant,
-    removeParticipant,
+    removeParticipant
   };
 }

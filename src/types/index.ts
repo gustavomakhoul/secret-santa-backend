@@ -1,10 +1,11 @@
 export interface Participant {
   id: string;
   name: string;
-  email: string;
+  whatsapp?: string;
+  assignedTo?: string;
 }
 
-export interface SecretSantaPair {
-  giver: Participant;
-  receiver: Participant;
+export interface DrawResult {
+  giver: string;
+  receiver: string;
 }
