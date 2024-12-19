@@ -3,22 +3,23 @@ import cors from 'cors';
 import { apiRouter } from './routes/api.routes.js';
 import { healthRouter } from './routes/healthRoutes.js';
 import { errorHandler } from './middleware/error.middleware.js';
+import { corsConfig } from './config/cors.config.js';
 
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://courageous-horse-5119ed.netlify.app'
-  ],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type'],
-  credentials: false
-}));
+app.use(cors(corsConfig));
 
 // Handle preflight requests
-app.options('*', cors());
+app.options('*', cors(corsConfig));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 // Middleware
 app.use(express.json());

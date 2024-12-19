@@ -39,11 +39,10 @@ export async function makeApiRequest<T>(
     return response.json();
   } catch (error) {
     console.error('API request failed:', error);
-    throw new Error(
-      error instanceof Error 
-        ? error.message 
-        : ERROR_MESSAGES.CONNECTION_ERROR
-    );
+    if (error instanceof Error && error.message.includes('Failed to fetch')) {
+      throw new Error(ERROR_MESSAGES.CONNECTION_ERROR);
+    }
+    throw error;
   }
 }
 
