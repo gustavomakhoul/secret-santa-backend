@@ -1,5 +1,5 @@
 export const corsConfig = {
-  origin: [
+  origin: process.env.CORS_ORIGINS?.split(',') || [
     'http://localhost:5173',
     'https://courageous-horse-5119ed.netlify.app'
   ],
