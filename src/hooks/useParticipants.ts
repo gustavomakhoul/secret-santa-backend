@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { Participant } from '../types';
+import type { Participant } from '../types';
 
 export function useParticipants() {
   const [participants, setParticipants] = useState<Participant[]>([]);
 
-  const addParticipant = (newParticipant: Omit<Participant, 'id'>) => {
-    setParticipants([
-      ...participants,
-      {
-        id: crypto.randomUUID(),
-        ...newParticipant
-      }
-    ]);
+  const addParticipant = ({ name, email }: Omit<Participant, 'id'>) => {
+    setParticipants([...participants, { 
+      id: Date.now().toString(), 
+      name, 
+      email 
+    }]);
   };
 
   const removeParticipant = (id: string) => {
