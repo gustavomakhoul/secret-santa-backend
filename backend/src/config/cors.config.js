@@ -4,6 +4,9 @@ export const corsConfig = {
     'https://courageous-horse-5119ed.netlify.app'
   ],
   methods: ['GET', 'POST', 'OPTIONS'],
-  credentials: true,
-  optionsSuccessStatus: 200
+  allowedHeaders: ['Content-Type'],
+  exposedHeaders: ['Content-Length', 'Content-Type'],
+  credentials: false,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };

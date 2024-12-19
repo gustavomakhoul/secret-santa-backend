@@ -1,27 +1,24 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { apiRouter } from './routes/api.routes.js';
 import { healthRouter } from './routes/healthRoutes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 
-// Load environment variables
-dotenv.config();
-
 const app = express();
 
 // CORS configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://courageous-horse-5119ed.netlify.app'
-];
-
 app.use(cors({
-  origin: allowedOrigins,
+  origin: [
+    'http://localhost:5173',
+    'https://courageous-horse-5119ed.netlify.app'
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
-  credentials: true
+  credentials: false
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Middleware
 app.use(express.json());

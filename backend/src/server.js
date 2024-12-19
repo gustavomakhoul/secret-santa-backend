@@ -1,15 +1,9 @@
-import dotenv from 'dotenv';
 import app from './app.js';
+import { serverConfig } from './config/server.config.js';
 
-// Load environment variables
-dotenv.config();
+const port = serverConfig.port;
 
-const port = process.env.PORT || 3001;
-
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Environment: ${serverConfig.environment}`);
 });
-
-export default app;

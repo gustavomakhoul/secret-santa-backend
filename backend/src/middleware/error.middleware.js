@@ -7,7 +7,7 @@ export function errorHandler(err, req, res, next) {
   if (err.message.includes('CORS')) {
     return res.status(403).json({
       error: 'CORS Error',
-      message: 'Not allowed by CORS'
+      message: 'Origin not allowed'
     });
   }
 
@@ -21,6 +21,6 @@ export function errorHandler(err, req, res, next) {
   // Handle unexpected errors
   return res.status(500).json({
     error: 'Internal Server Error',
-    details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 }

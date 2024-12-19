@@ -11,9 +11,11 @@ export async function makeApiRequest<T>(
   }
 
   const defaultOptions: RequestInit = {
-    credentials: 'include',
+    mode: 'cors',
+    credentials: 'omit',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
   };
 
@@ -28,7 +30,9 @@ export async function makeApiRequest<T>(
     });
 
     if (!response.ok) {
-      const error = await response.json();
+      const error = await response.json().catch(() => ({
+        message: ERROR_MESSAGES.UNEXPECTED_ERROR
+      }));
       throw new Error(error.message || ERROR_MESSAGES.UNEXPECTED_ERROR);
     }
 
