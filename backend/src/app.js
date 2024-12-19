@@ -11,30 +11,17 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [
+const allowedOrigins = [
   'http://localhost:5173',
   'https://courageous-horse-5119ed.netlify.app'
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(null, false);
-    }
-    return callback(null, true);
-  },
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200,
-  preflightContinue: false
+  allowedHeaders: ['Content-Type'],
+  credentials: true
 }));
-
-// Handle OPTIONS requests explicitly
-app.options('*', cors());
 
 // Middleware
 app.use(express.json());
