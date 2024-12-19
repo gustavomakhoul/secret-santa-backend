@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import { apiRouter } from './routes/api.routes.js';
-import { healthRouter } from './routes/healthRoutes.js';
+import { healthRouter } from './routes/health.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import { corsConfig } from './config/cors.config.js';
+import { securityMiddleware } from './middleware/security.middleware.js';
 
 const app = express();
 
@@ -14,14 +15,9 @@ app.use(cors(corsConfig));
 app.options('*', cors(corsConfig));
 
 // Security headers
-app.use((req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'DENY');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  next();
-});
+app.use(securityMiddleware);
 
-// Middleware
+// Body parser
 app.use(express.json());
 
 // Routes
