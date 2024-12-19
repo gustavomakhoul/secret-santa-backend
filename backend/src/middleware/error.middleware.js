@@ -1,5 +1,6 @@
 import { AppError } from '../utils/errors.js';
 import { HTTP_STATUS } from '../config/constants.js';
+import { serverConfig } from '../config/server.config.js';
 
 export function errorHandler(err, req, res, next) {
   console.error('Error:', err);
@@ -9,23 +10,20 @@ export function errorHandler(err, req, res, next) {
     return res.status(HTTP_STATUS.FORBIDDEN).json({
       error: 'CORS Error',
       message: 'Origin not allowed',
-      allowedOrigins: process.env.CORS_ORIGINS?.split(',') || [
-        'http://localhost:5173',
-        'https://courageous-horse-5119ed.netlify.app'
-      ]
+      allowedOrigins: serverConfig.corsOrigins
     });
   }
 
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       error: err.message,
-      details: process.env.NODE_ENV === 'development' ? err.details : undefined
+      details: serverConfig.environment === 'development' ? err.details : undefined
     });
   }
 
   // Handle unexpected errors
   return res.status(HTTP_STATUS.SERVER_ERROR).json({
     error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: serverConfig.environment === 'development' ? err.message : undefined
   });
 }
