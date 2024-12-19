@@ -1,7 +1,8 @@
 import { Resend } from 'resend';
 import type { SecretSantaPair } from '../types';
+import { EMAIL_CONFIG } from '../config/email';
 
-const resend = new Resend('re_7XCu3Tc8_zvz6hDr2rNqVAtRgFDAX1qJm');
+const resend = new Resend(EMAIL_CONFIG.RESEND_API_KEY);
 
 export const generateEmailHtml = (giverName: string, receiverName: string) => `
   <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -16,11 +17,10 @@ export const generateEmailHtml = (giverName: string, receiverName: string) => `
 `;
 
 export const sendEmail = async (pair: SecretSantaPair) => {
-  // alert(JSON.stringify(pair))
-    return resend.emails.send({
-      from: 'amigo-secreto@nohca.com',
-      to: pair.giver.email,
-      subject: '🎄 Seu Amigo Secreto foi sorteado!',
-      html: generateEmailHtml(pair.giver.name, pair.receiver.name)
-    });
-  }
+  return resend.emails.send({
+    from: EMAIL_CONFIG.FROM_EMAIL,
+    to: pair.giver.email,
+    subject: EMAIL_CONFIG.SUBJECT,
+    html: generateEmailHtml(pair.giver.name, pair.receiver.name)
+  });
+}
