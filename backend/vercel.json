@@ -15,5 +15,9 @@
       "src": "/(.*)",
       "dest": "/api/index.js"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "CORS_ORIGINS": "http://localhost:5173,https://courageous-horse-5119ed.netlify.app"
+  }
 }
