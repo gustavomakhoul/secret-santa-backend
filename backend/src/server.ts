@@ -1,21 +1,18 @@
 import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
-import { config } from 'dotenv';
+import { environment } from './config/environment.js';
+import { corsConfig } from './config/corsConfig.js';
 import { setupSocketIO } from './socket/socketSetup.js';
 import { setupWhatsAppClient } from './whatsapp/whatsappClient.js';
 import { errorHandler } from './middleware/errorHandler.js';
-
-config();
+import { logger } from './utils/logger.js';
 
 const app = express();
 const httpServer = createServer(app);
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  methods: ['GET', 'POST']
-}));
+app.use(cors(corsConfig));
 app.use(express.json());
 
 // Initialize WhatsApp client
@@ -27,7 +24,6 @@ setupSocketIO(httpServer, whatsappClient);
 // Error handling
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+httpServer.listen(environment.port, () => {
+  logger.info(`Server running on port ${environment.port}`);
 });
